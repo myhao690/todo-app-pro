@@ -58,15 +58,7 @@ jobs:
         cd build
         sudo apt-get install -y gcovr
         gcovr -r .. --txt
-        gcovr -r .. --html --html-details -o coverage.html
-        
-    - name: Upload coverage report
-      if: matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug'
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report-${{ github.run_number }}
-        path: build/coverage.html
-        retention-days: 7
+        echo "✅ Coverage report generated (output above)"
 
   code-quality:
     name: Code Quality Analysis
@@ -146,11 +138,5 @@ jobs:
         cp build/todoapp release/
         cp README.md LICENSE release/ 2>/dev/null || true
         cd release && tar -czf ../todoapp-release.tar.gz .
-        
-    - name: Upload release package
-      if: github.ref == 'refs/heads/main'
-      uses: actions/upload-artifact@v4
-      with:
-        name: todoapp-release-${{ github.run_number }}
-        path: todoapp-release.tar.gz
-        retention-days: 30
+        echo "✅ Release package created: todoapp-release.tar.gz"
+        ls -la ../todoapp-release.tar.gz
