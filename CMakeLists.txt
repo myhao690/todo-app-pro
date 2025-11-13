@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.16)  # 降低版本要求提高兼容性
 project(TodoApp VERSION 1.0.0)
 
 # 使用 C++20 标准
@@ -10,6 +10,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 开启所有警告
 add_compile_options(-Wall -Wextra -Wpedantic)
+
+# 全局包含路径（作为备用方案）
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # 设置编译选项
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -32,9 +35,11 @@ add_executable(todoapp
     src/todo_manager.cpp
 )
 
-# 为主程序设置头文件包含路径
+# 为主程序设置头文件包含路径（多种方法确保兼容性）
 target_include_directories(todoapp PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 # 启用测试
@@ -47,9 +52,11 @@ add_executable(test_todoapp
     src/todo_manager.cpp
 )
 
-# 为测试程序设置头文件包含路径
+# 为测试程序设置头文件包含路径（多种方法确保兼容性）
 target_include_directories(test_todoapp PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 # 添加测试
@@ -80,5 +87,9 @@ set(CPACK_PACKAGE_DESCRIPTION "现代C++待办事项管理器")
 set(CPACK_PACKAGE_CONTACT "myhao690 <17713051689@163.com>")
 include(CPack)
 
+# 调试信息
 message(STATUS "TodoApp 项目配置完成！")
-message(STATUS "头文件路径: ${CMAKE_CURRENT_SOURCE_DIR}/include")
+message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
+message(STATUS "头文件路径: ${CMAKE_SOURCE_DIR}/include")
