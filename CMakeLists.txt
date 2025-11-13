@@ -11,9 +11,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 开启所有警告
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-# 包含头文件目录
-include_directories(include)
-
 # 设置编译选项
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_options(-g -O0)
@@ -35,6 +32,11 @@ add_executable(todoapp
     src/todo_manager.cpp
 )
 
+# 为主程序设置头文件包含路径
+target_include_directories(todoapp PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 # 启用测试
 enable_testing()
 
@@ -43,6 +45,11 @@ add_executable(test_todoapp
     tests/test_main.cpp
     src/task.cpp
     src/todo_manager.cpp
+)
+
+# 为测试程序设置头文件包含路径
+target_include_directories(test_todoapp PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 # 添加测试
@@ -74,3 +81,4 @@ set(CPACK_PACKAGE_CONTACT "myhao690 <17713051689@163.com>")
 include(CPack)
 
 message(STATUS "TodoApp 项目配置完成！")
+message(STATUS "头文件路径: ${CMAKE_CURRENT_SOURCE_DIR}/include")
