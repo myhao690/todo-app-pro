@@ -57,7 +57,7 @@ jobs:
         ctest --output-on-failure --verbose
         
     - name: 上传测试结果
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.build-type }}
@@ -71,7 +71,7 @@ jobs:
         gcovr -r .. --html --html-details -o coverage.html
         
     - name: 上传覆盖率报告
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug'
       with:
         name: coverage-report
@@ -136,7 +136,7 @@ jobs:
         tar -czf todoapp-release.tar.gz -C release .
         
     - name: 上传发布产物
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: todoapp-release
         path: todoapp-release.tar.gz
